@@ -49,8 +49,8 @@ def get_chef_cookbooks(ws_values={})
   end
 
   chef_cookbook ||= ""
-  log(:info, "chef_cookbooks: #{chef_cookbooks}")
-  return chef_cookbooks
+  log(:info, "chef_cookbook: #{chef_cookbook}")
+  return chef_cookbook
 end
 
 def get_chef_node_name
@@ -115,16 +115,24 @@ begin
 
   ws_values = (@task.options.fetch(:ws_values, {}) rescue {})
 
-  chef_cookbooks = get_chef_cookbooks(ws_values)
+
   chef_environment = get_chef_environment_name
   chef_node_name = get_chef_node_name
   chef_version = get_chef_version
 
-  chef_runlist = ""
-  chef_cookbooks.each do |chef_cookbook|
-    chef_runlist = "#{chef_runlist},#{chef_cookbook}"
+  default_chef_cookbooks = $evm.object['default_chef_cookbooks']
+  chef_cookbooks = get_chef_cookbooks(ws_values)
+
+  log(:info, "Default Chef Cookbooks #{default_chef_cookbooks.inspect}")
+  log(:info, "Chef Cookbooks #{chef_cookbooks.inspect}")
+
+  if is_array(default_chef_cookbooks) && is_array(chef_cookbooks)
+    chef_runlist = default_chef_cookbooks.concat(chef_cookbooks).map(&:inspect).join(', ')
+  elsif
+    chef_runlist = default_chef_cookbooks.map(&:inspect).join(', ')
   end
-  chef_runlist.sub!(/,/,'')
+
+  log(:info, "Chef runlist: #{chef_runlist}")
 
   chef_ipaddress_attribute = 'Primary IPAddress'
   primary_ipaddress = $evm.get_state_var(chef_ipaddress_attribute)
