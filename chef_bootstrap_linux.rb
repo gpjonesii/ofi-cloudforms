@@ -97,6 +97,13 @@ def retry_method(retry_time=1.minute)
   exit MIQ_OK
 end
 
+def get_chef_version(chef_version=nil)
+  chef_version ||= $evm.object['chef_version']
+
+  log(:info, "chef_version: #{chef_version}")
+  return chef_version
+end
+
 begin
   $evm.root.attributes.sort.each { |k, v| log(:info, "Root:<$evm.root> Attribute - #{k}: #{v}")}
 
@@ -141,6 +148,8 @@ begin
     if chef_version
       bootstrap_cmd += "--bootstrap-version #{chef_version} "
     end
+
+    log(:info, "Chef bootstrap command: #{bootstrap_cmd}")
 
     bootstrap_result = call_chef(bootstrap_cmd, 300)
     if bootstrap_result.success?
