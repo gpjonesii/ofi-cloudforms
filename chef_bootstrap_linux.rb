@@ -126,7 +126,7 @@ begin
   log(:info, "Default Chef Cookbooks #{default_chef_cookbooks.inspect}")
   log(:info, "Chef Cookbooks #{chef_cookbooks.inspect}")
 
-  if is_array(default_chef_cookbooks) && is_array(chef_cookbooks)
+  if default_chef_cookbooks.kind_of?(Array) && chef_cookbooks.kind_of?(Array)
     chef_runlist = default_chef_cookbooks.concat(chef_cookbooks).map(&:inspect).join(', ')
   elsif
     chef_runlist = default_chef_cookbooks.map(&:inspect).join(', ')
