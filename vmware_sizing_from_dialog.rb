@@ -15,7 +15,7 @@ task.miq_request_tasks.each do |child_task|
     num_cores = 2
     mem_size = '8192'
   end
-  child_task.set_dialog_option(:dialog_number_of_sockets, num_sockets)
-  child_task.set_dialog_option(:dialog_cores_per_socket, num_cores)
-  child_task.set_dialog_option(:dialog_memory, mem_size)
+  child_task.set_dialog_option('dialog_number_of_sockets', num_sockets)
+  child_task.set_dialog_option('dialog_cores_per_socket', num_cores)
+  child_task.set_dialog_option('dialog_memory', mem_size)
 end
