@@ -1,6 +1,5 @@
 task = $evm.root['service_template_provision_task']
 vm_size = $evm.root['dialog_vm_size']
-
 task.miq_request_tasks.each do |child_task|
   case vm_size
   when "small"
@@ -16,8 +15,7 @@ task.miq_request_tasks.each do |child_task|
     num_cores = 2
     mem_size = '8192'
   end
-
-  child_task.set_option(:number_of_sockets, num_sockets)
-  child_task.set_option(:cores_per_socket, num_cores)
-  child_task.set_option(:vm_memory, mem_size)
+  child_task.set_dialog_option(:dialog_number_of_sockets, num_sockets)
+  child_task.set_dialog_option(:dialog_cores_per_socket, num_cores)
+  child_task.set_dialog_option(:dialog_memory, mem_size)
 end
